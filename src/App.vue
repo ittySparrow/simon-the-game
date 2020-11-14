@@ -1,6 +1,6 @@
 <template>
   <div class="app-wrapper" id="app">
-    <div class="title">Simon the Game</div>
+    <div class="title">Simon Says</div>
     <Game />
   </div>
 </template>
