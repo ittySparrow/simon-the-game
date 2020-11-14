@@ -350,7 +350,7 @@ input[type='radio']:checked {
 }
 
 .side-panel_element {
-  width: 85px;
+  width: 110px;
   padding-top: 15px;
   margin-bottom: 20px;
   font-size: 20px;
