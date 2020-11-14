@@ -1,5 +1,8 @@
 <template>
-  <Game />
+  <div class="app-wrapper" id="app">
+    <div class="title">Simon the Game</div>
+    <Game />
+  </div>
 </template>
 
 <script>
@@ -15,11 +18,25 @@ export default {
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: SF Pro Text, SF Pro Icons, Helvetica Neue, Helvetica, Arial,
+    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  line-height: 1.47059;
+  letter-spacing: -0.022em;
+  color: #333;
   text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 40px;
+}
+
+.app-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title {
+  font-size: 30px;
+  font-weight: 600;
 }
 </style>
