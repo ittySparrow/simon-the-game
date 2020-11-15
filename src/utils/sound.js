@@ -1,2 +1,1 @@
-export default (id) =>
-  new Audio(`https://s3.amazonaws.com/freecodecamp/simonSound${id}.mp3`)
+export default (id) => new Audio(require(`../assets/sounds/${id}.mp3`)).play()

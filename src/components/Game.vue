@@ -5,7 +5,7 @@
       <div class="form-group">
         <input
           type="radio"
-          class="gameMode"
+          class="gameMode no-select"
           id="easy"
           value="easy"
           v-model="gameMode"
@@ -15,7 +15,7 @@
       <div class="form-group">
         <input
           type="radio"
-          class="gameMode"
+          class="gameMode no-select"
           id="normal"
           value="normal"
           v-model="gameMode"
@@ -25,7 +25,7 @@
       <div class="form-group">
         <input
           type="radio"
-          class="gameMode"
+          class="gameMode no-select"
           id="hard"
           value="hard"
           v-model="gameMode"
@@ -36,8 +36,8 @@
     <!-- -----------Main panel------------ -->
     <section class="main-panel">
       <div
-        v-on:mousedown="handleClick"
-        class="main-panel_element yellow"
+        v-on:click="handleClick"
+        class="main-panel_element yellow no-select"
         :class="{
           active: activePanel === '1',
           disabled: state === 'game lost',
@@ -45,8 +45,8 @@
         id="1"
       ></div>
       <div
-        v-on:mousedown="handleClick"
-        class="main-panel_element red"
+        v-on:click="handleClick"
+        class="main-panel_element red no-select"
         :class="{
           active: activePanel === '2',
           disabled: state === 'game lost',
@@ -54,8 +54,8 @@
         id="2"
       ></div>
       <div
-        v-on:mousedown="handleClick"
-        class="main-panel_element green"
+        v-on:click="handleClick"
+        class="main-panel_element green no-select"
         :class="{
           active: activePanel === '3',
           disabled: state === 'game lost',
@@ -63,8 +63,8 @@
         id="3"
       ></div>
       <div
-        v-on:mousedown="handleClick"
-        class="main-panel_element blue"
+        v-on:click="handleClick"
+        class="main-panel_element blue no-select"
         :class="{
           active: activePanel === '4',
           disabled: state === 'game lost',
@@ -74,7 +74,7 @@
       <button
         v-on:click="startGame"
         :disabled="state !== 'normal'"
-        class="main-panel_button"
+        class="main-panel_button no-select"
       >
         START
       </button>
@@ -88,7 +88,7 @@
       <div class="side-panel_element">
         <button
           v-on:click="reset"
-          class="button"
+          class="button no-select"
           :disabled="state === 'game lost'"
         >
           reset
@@ -101,7 +101,7 @@
     <span class="lost-game-message_text"
       >Sorry, that was the wrong one... try again!</span
     >
-    <button class="button" v-on:click="state = 'normal'">OK</button>
+    <button class="button no-select" v-on:click="state = 'normal'">OK</button>
   </div>
 </template>
 
@@ -122,11 +122,10 @@ export default {
     }
   },
   methods: {
-    handleClick: function(e) {
-      if (this.state === 'in progress' || this.state === 'game lost') {
+    handleClick: async function (e) {
+      if (this.state === 'normal' || this.state === 'waiting') {
         e.preventDefault()
-      } else {
-        this.activatePanel(e.target.id)
+        await this.activatePanel(e.target.id)
         if (this.state === 'waiting') {
           this.clicks += 1
           if (this.clickOrder[this.clicks - 1] !== e.target.id) {
@@ -134,24 +133,26 @@ export default {
             this.state = 'game lost'
           } else if (this.clicks === this.round) {
             this.state = 'in progress'
-            setTimeout(() => this.startNewRound(), 1200)
+            setTimeout(() => this.startNewRound(), 1000)
           }
         }
+      } else {
+        e.preventDefault()
       }
     },
-    startGame: function(gameMode) {
-      this.reset()
+    startGame: async function (gameMode) {
+      await this.reset()
       this.state = 'in progress' // disable panel for user input while panels are activating automatically
       this.startNewRound()
     },
-    startNewRound: function() {
+    startNewRound: async function () {
       this.timeoutIDs = []
       this.clicks = 0
       this.round += 1
       this.clickOrder.push(String(randomBetween(1, 4)))
-      this.showClickOrder()
+      await this.showClickOrder()
     },
-    showClickOrder: function() {
+    showClickOrder: async function () {
       for (let j = 0; j < this.clickOrder.length; j += 1) {
         const panel = this.clickOrder[j]
         this.timeoutIDs.push(
@@ -163,14 +164,14 @@ export default {
         this.timeRange() * (this.clickOrder.length - 1)
       ) // turn on panel to wait for user input after the last panel is activated
     },
-    activatePanel: function(id) {
+    activatePanel: async function (id) {
       this.activePanel = id
-      sound(id).play()
+      sound(id)
       setTimeout(() => {
         this.activePanel = ''
       }, 250)
     },
-    timeRange: function() {
+    timeRange: function () {
       switch (this.gameMode) {
         case 'easy':
           return 1500
@@ -180,7 +181,7 @@ export default {
           return 1000
       }
     },
-    reset: function() {
+    reset: async function () {
       this.state = 'normal'
       this.round = 0
       this.clicks = 0
@@ -193,6 +194,19 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+:focus {
+  outline: none !important;
+}
+.no-select {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 button,
 button:focus,
 button:active,
@@ -245,11 +259,12 @@ input[type='radio']:checked {
 }
 
 .game-wrapper {
-  border: 1px solid #333;
-  width: 600px;
-  margin-top: 50px;
+  border-top: 1px solid #333;
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
   align-content: center;
-  border-radius: 10px;
+  align-items: center;
 }
 
 .game-wrapper.opacity {
@@ -411,5 +426,44 @@ hr {
   font-size: 18px;
   display: block;
   margin-bottom: 15px;
+}
+
+@media (max-width: 768px) {
+  .main-panel {
+    width: 340px;
+    height: 340px;
+    position: relative;
+  }
+
+  .main-panel_element {
+    position: absolute;
+    width: 164px;
+    height: 164px;
+  }
+
+  .yellow {
+    left: 0;
+  }
+  .red {
+    right: 0;
+  }
+
+  .green {
+    right: 0;
+    top: 170px;
+  }
+  .blue {
+    left: 0;
+    top: 170px;
+  }
+
+  .main-panel_button,
+  .main-panel_button:hover {
+    width: 120px;
+    height: 120px;
+    top: 110px;
+    left: 110px;
+    font-size: 15px;
+  }
 }
 </style>

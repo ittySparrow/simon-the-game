@@ -17,6 +17,10 @@ export default {
 </script>
 
 <style>
+body {
+  margin: 0;
+  padding: 0;
+}
 #app {
   font-family: SF Pro Text, SF Pro Icons, Helvetica Neue, Helvetica, Arial,
     sans-serif;
@@ -26,6 +30,7 @@ export default {
   letter-spacing: -0.022em;
   color: #333;
   text-align: center;
+  margin: 0 auto;
   margin-top: 40px;
 }
 
