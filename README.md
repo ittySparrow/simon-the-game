@@ -2,8 +2,7 @@
 
 ## Description
 
-Simple game "Simon Says" on Vue.js
-Written as test case.
+Simple game "Simon Says" on Vue.js written as test case.
 
 ### Deployed project
 
