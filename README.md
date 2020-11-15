@@ -1,24 +1,9 @@
-# simon-the-game-test
+# simon-the-game
 
-## Project setup
-```
-yarn install
-```
+## Description
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
+Simple game "Simon Says" on Vue.js
 
-### Compiles and minifies for production
-```
-yarn build
-```
+### Deployed project
 
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+[Simon Says](https://ittysparrow.github.io/simon-the-game/)
