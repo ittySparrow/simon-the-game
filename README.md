@@ -3,6 +3,7 @@
 ## Description
 
 Simple game "Simon Says" on Vue.js
+Written as test case.
 
 ### Deployed project
 
